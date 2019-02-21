@@ -30,20 +30,20 @@ public class BookingController {
         User user = userService.getById(Long.valueOf(userId));
         Double price = bookingService.getTicketPrice(event, auditorium, date,
                         Collections.singletonList(1), user);
-
         model.addAttribute("price", price);
         return "somePage";
     }
+
 
     @RequestMapping(value = "/bookTicket", method = RequestMethod.POST)
     public String bookTicket(Model model,@RequestParam String userId, @ModelAttribute Ticket ticket) {
 
         User user = userService.getById(Long.valueOf(userId));
-
         bookingService.bookTicket(user, ticket);
         model.addAttribute("success", true);
         return "somePage";
     }
+
 
     @RequestMapping(value = "/ticketsForEvent", method = RequestMethod.GET)
     public String getTicketsForEvent(Model model){

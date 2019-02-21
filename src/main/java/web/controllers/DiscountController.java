@@ -24,7 +24,7 @@ public class DiscountController {
     @Autowired
     private EventService eventService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/getdiscount", method = RequestMethod.GET)
     public String getDiscount(@RequestParam String eventId, @RequestParam String userId){
         Event event = eventService.getById(Long.valueOf(eventId));
         User user = userService.getById(Long.valueOf(userId));
