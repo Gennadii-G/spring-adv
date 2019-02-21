@@ -40,6 +40,11 @@ public class EventServiceImpl implements EventService {
         return eventDAO.getByName(name);
     }
 
+    @Override
+    public Event getById(Long id) {
+        return eventDAO.getById(id);
+    }
+
     public Event getEvent(String name, Auditorium auditorium, LocalDateTime dateTime) {
         return eventDAO.get(name, auditorium, dateTime);
     }

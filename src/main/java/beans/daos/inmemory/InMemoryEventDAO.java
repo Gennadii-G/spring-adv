@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -135,5 +136,19 @@ public class InMemoryEventDAO implements EventDAO {
         return Objects.isNull(compareValue) ? eventStream : eventStream.filter(
                 event -> Objects.nonNull(valueExtractor.apply(event))).filter(
                 event -> Objects.equals(valueExtractor.apply(event), compareValue));
+    }
+
+    @Override
+    public Event getById(Long id) {
+        Event event = null;
+        Predicate<Map.Entry<String, List<Event>>> predicate = p -> {
+            return p.getValue().stream().anyMatch(e -> e.getId() == id);
+        };
+        Map.Entry<String, List<Event>> entry = db.entrySet().stream().filter(predicate).findFirst().orElse(null);
+
+        if(entry != null) {
+            event = entry.getValue().stream().filter(p -> p.getId() == id).findFirst().get();
+        }
+        return event;
     }
 }

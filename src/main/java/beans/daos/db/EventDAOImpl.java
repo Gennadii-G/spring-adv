@@ -95,4 +95,9 @@ public class EventDAOImpl extends AbstractDAO implements EventDAO {
         query.setParameter("dateTime", date);
         return ((List<Event>) query.list());
     }
+
+    @Override
+    public Event getById(Long id) {
+        return ((Event) createBlankCriteria(Event.class).add(Restrictions.eq("id", id)).uniqueResult());
+    }
 }

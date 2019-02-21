@@ -6,13 +6,12 @@ import beans.services.BookingService;
 import beans.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/booking")
@@ -25,22 +24,33 @@ public class BookingController {
     private UserService userService;
 
     @RequestMapping(value = "/ticketPrice", method = RequestMethod.GET)
-    public String getTicketPrice(@RequestParam String event, @RequestParam String auditorium,
-                                       LocalDateTime date, String userId) {
+    public String getTicketPrice(Model model, @RequestParam String event, @RequestParam String auditorium,
+                                 @RequestParam LocalDateTime date, @RequestParam String userId) {
 
         User user = userService.getById(Long.valueOf(userId));
-
         Double price = bookingService.getTicketPrice(event, auditorium, date,
                         Collections.singletonList(1), user);
-        return String.valueOf(price);
+
+        model.addAttribute("price", price);
+        return "somePage";
     }
 
     @RequestMapping(value = "/bookTicket", method = RequestMethod.POST)
-    public String bookTicket(@RequestParam String userId, @ModelAttribute Ticket ticket) {
+    public String bookTicket(Model model,@RequestParam String userId, @ModelAttribute Ticket ticket) {
 
         User user = userService.getById(Long.valueOf(userId));
 
         bookingService.bookTicket(user, ticket);
-        return "success";
+        model.addAttribute("success", true);
+        return "somePage";
+    }
+
+    @RequestMapping(value = "/ticketsForEvent", method = RequestMethod.GET)
+    public String getTicketsForEvent(Model model){
+
+        List<Ticket> tickets;
+        tickets = bookingService.getTicketsForEvent("event", "Auditorium", LocalDateTime.now());
+        model.addAttribute("tickets", tickets);
+        return "somePage";
     }
 }

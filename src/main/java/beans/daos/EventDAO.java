@@ -23,6 +23,8 @@ public interface EventDAO {
 
     void delete(Event event);
 
+    Event getById(Long id);
+
     List<Event> getByName(String name);
 
     List<Event> getByNameAndDate(String name, LocalDateTime dateTime);
