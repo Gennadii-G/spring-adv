@@ -17,6 +17,8 @@ import java.util.List;
 @RequestMapping(value = "/booking")
 public class BookingController {
 
+    private static final String VIEW = "page";
+
     @Autowired
     private BookingService bookingService;
 
@@ -31,7 +33,7 @@ public class BookingController {
         Double price = bookingService.getTicketPrice(event, auditorium, date,
                         Collections.singletonList(1), user);
         model.addAttribute("price", price);
-        return "somePage";
+        return VIEW;
     }
 
 
@@ -41,7 +43,7 @@ public class BookingController {
         User user = userService.getById(Long.valueOf(userId));
         bookingService.bookTicket(user, ticket);
         model.addAttribute("success", true);
-        return "somePage";
+        return VIEW;
     }
 
 
@@ -50,7 +52,8 @@ public class BookingController {
 
         List<Ticket> tickets;
         tickets = bookingService.getTicketsForEvent("event", "Auditorium", LocalDateTime.now());
+        System.out.println(tickets);
         model.addAttribute("tickets", tickets);
-        return "somePage";
+        return "tickets";
     }
 }

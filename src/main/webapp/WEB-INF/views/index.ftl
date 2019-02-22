@@ -1,18 +1,8 @@
 <html>
 <head>
-    <title>Person List</title>
+    <title>hello freemaker</title>
 </head>
 <body>
-<h3>Person List</h3>
-<br><br>
-    <div>
-
-        <table border="1">
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-            </tr>
-    </table>
-</div>
+<h3>lorem ipsum dolor =)</h3>
 </body>
 </html>
