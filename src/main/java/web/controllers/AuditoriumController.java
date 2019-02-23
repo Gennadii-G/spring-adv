@@ -27,7 +27,11 @@ public class AuditoriumController {
         return "auditoriums";
     }
 
-//    /auditorium/byName?name=Blue%20hall
+    /**
+     * @param model
+     * @param name
+     * request example: '/auditorium/byName?name=Blue%20hall'
+     */
     @RequestMapping(value = "/byName")
     public String getAuditorium(Model model, @RequestParam String name){
         Auditorium auditorium = auditoriumService.getByName(name);

@@ -4,12 +4,16 @@ import beans.models.Ticket;
 import beans.models.User;
 import beans.services.BookingService;
 import beans.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,6 +28,8 @@ public class BookingController {
 
     @Autowired
     private UserService userService;
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value = "/ticketPrice", method = RequestMethod.GET)
     public String getTicketPrice(Model model, @RequestParam String event, @RequestParam String auditorium,
@@ -47,12 +53,16 @@ public class BookingController {
     }
 
 
+    /**
+     * @request example '/booking/ticketsForEvent?event=The%20revenant&auditorium=Yellow%20hall'
+     */
     @RequestMapping(value = "/ticketsForEvent", method = RequestMethod.GET)
-    public String getTicketsForEvent(Model model){
+    public String getTicketsForEvent(Model model, @RequestParam String event, @RequestParam String auditorium){
+        LocalDateTime mock = LocalDateTime.of(LocalDate.of(2016, 2, 5),
+                LocalTime.of(21, 18, 0));
 
         List<Ticket> tickets;
-        tickets = bookingService.getTicketsForEvent("event", "Auditorium", LocalDateTime.now());
-        System.out.println(tickets);
+        tickets = bookingService.getTicketsForEvent(event, auditorium, mock);
         model.addAttribute("tickets", tickets);
         return "tickets";
     }

@@ -2,6 +2,8 @@ package beans.services;
 
 import beans.daos.BookingDAO;
 import beans.models.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +33,7 @@ public class BookingServiceImpl implements BookingService {
     private final UserService       userService;
     private final BookingDAO        bookingDAO;
     private final DiscountService   discountService;
+    private final Logger            logger;
     final         int               minSeatNumber;
     final         double            vipSeatPriceMultiplier;
     final         double            highRatedPriceMultiplier;
@@ -55,6 +58,7 @@ public class BookingServiceImpl implements BookingService {
         this.vipSeatPriceMultiplier = vipSeatPriceMultiplier;
         this.highRatedPriceMultiplier = highRatedPriceMultiplier;
         this.defaultRateMultiplier = defaultRateMultiplier;
+        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override
@@ -153,6 +157,8 @@ public class BookingServiceImpl implements BookingService {
     public List<Ticket> getTicketsForEvent(String event, String auditoriumName, LocalDateTime date) {
         final Auditorium auditorium = auditoriumService.getByName(auditoriumName);
         final Event foundEvent = eventService.getEvent(event, auditorium, date);
+        logger.info("fount event: '{}'", foundEvent);
+        logger.info("fount event with params: '{}', '{}', '{}'", event, auditorium, date);
         return bookingDAO.getTickets(foundEvent);
     }
 }

@@ -47,7 +47,4 @@ public class UserServiceImpl implements UserService {
         return userDAO.getAllByName(name);
     }
 
-    public List<Ticket> getBookedTickets() {
-        throw new UnsupportedOperationException("not implemented yet");
-    }
 }

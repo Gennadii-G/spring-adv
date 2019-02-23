@@ -142,6 +142,6 @@ public class MainController {
         System.out.println();
         System.out.println("LuckyWinnerAspect.getLuckyUsers() = " + LuckyWinnerAspect.getLuckyUsers());
 
-        return "index";
+        return "success";
     }
 }
