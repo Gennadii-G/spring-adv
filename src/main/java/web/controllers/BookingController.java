@@ -1,5 +1,6 @@
 package web.controllers;
 
+import beans.converters.TicketsToPdfConverter;
 import beans.models.Ticket;
 import beans.models.User;
 import beans.services.BookingService;
@@ -9,8 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -28,6 +34,9 @@ public class BookingController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TicketsToPdfConverter ticketsToPdfConverter;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -58,6 +67,7 @@ public class BookingController {
      */
     @RequestMapping(value = "/ticketsForEvent", method = RequestMethod.GET)
     public String getTicketsForEvent(Model model, @RequestParam String event, @RequestParam String auditorium){
+        // this is mock
         LocalDateTime mock = LocalDateTime.of(LocalDate.of(2016, 2, 5),
                 LocalTime.of(21, 18, 0));
 
@@ -65,5 +75,31 @@ public class BookingController {
         tickets = bookingService.getTicketsForEvent(event, auditorium, mock);
         model.addAttribute("tickets", tickets);
         return "tickets";
+    }
+
+
+    @RequestMapping(value = "/pdf", method = RequestMethod.GET, headers = "Accept=application/pdf")
+    public void generateReport(HttpServletResponse response, @RequestParam String event,
+                               @RequestParam String auditorium) throws Exception {
+        // this is mock
+        LocalDateTime mock = LocalDateTime.of(LocalDate.of(2016, 2, 5),
+                LocalTime.of(21, 18, 0));
+
+        List<Ticket> tickets;
+        tickets = bookingService.getTicketsForEvent(event, auditorium, mock);
+
+        byte[] bytes = ticketsToPdfConverter.convert(tickets);
+        streamReport(response, bytes, "tickets.pdf");
+    }
+
+    private void streamReport(HttpServletResponse response, byte[] data, String name)
+            throws IOException {
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-disposition", "attachment; filename=" + name);
+        response.setContentLength(data.length);
+
+        response.getOutputStream().write(data);
+        response.getOutputStream().flush();
     }
 }
