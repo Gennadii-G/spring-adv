@@ -43,6 +43,23 @@ public class BatchLoadingController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * @ExampleOfXml
+     * <events>
+     *   <event>
+     *            <name>ipsum</name>
+     *            <rate>HIGH</rate>
+     *            <baseprice>30.00</baseprice>
+     *            <datetime>12.12.19</datetime>
+     *           <auditorium>Yellow hall</auditorium>
+     *   </event>
+     * <events>
+     * @param file
+     * @param modelMap
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/events", method = RequestMethod.POST)
     public void uploadEvents(@RequestParam("eventsFile") MultipartFile file, ModelMap modelMap)
