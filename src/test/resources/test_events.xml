@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <events>
     <event>
-        <!--<id>Everyday Italian</id>-->
         <name>ipsum</name>
         <rate>HIGH</rate>
         <baseprice>30.00</baseprice>
         <datetime>12.12.19</datetime>
         <auditorium>Yellow hall</auditorium>
     </event>
-    <!--<book category="children">-->
-        <!--<title lang="en">Harry Potter</title>-->
-        <!--<author>J K. Rowling</author>-->
-        <!--<year>2005</year>-->
-        <!--<price>29.99</price>-->
-    <!--</book>-->
+    <event>
+        <name>ipsum</name>
+        <rate>HIGH</rate>
+        <baseprice>30.00</baseprice>
+        <datetime>12.12.19</datetime>
+        <auditorium>Yellow hall</auditorium>
+    </event>
 </events>
