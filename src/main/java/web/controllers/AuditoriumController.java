@@ -5,10 +5,13 @@ import beans.services.AuditoriumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,5 +40,17 @@ public class AuditoriumController {
         Auditorium auditorium = auditoriumService.getByName(name);
         model.addAttribute("auditoriums", Collections.singletonList(auditorium));
         return "auditoriums";
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleException(Exception exception, HttpServletRequest request) {
+        exception.printStackTrace();
+
+        ModelAndView mav = new ModelAndView();
+        String message = exception.getMessage().replaceAll(";", ";\n");
+        mav.addObject("excClass", exception.getClass());
+        mav.addObject("message", message);
+        mav.setViewName("error");
+        return mav;
     }
 }

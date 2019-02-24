@@ -7,9 +7,13 @@ import beans.models.*;
 import beans.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -34,6 +38,14 @@ public class MainController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String mainPage() {
+        return "index";
+    }
+
+    @RequestMapping(value = "/npe", method = RequestMethod.GET)
+    public String exc() {
+        if(true){
+            throw new NullPointerException("something wrong");
+        }
         return "index";
     }
 
@@ -143,5 +155,17 @@ public class MainController {
         System.out.println("LuckyWinnerAspect.getLuckyUsers() = " + LuckyWinnerAspect.getLuckyUsers());
 
         return "success";
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleException(Exception exception, HttpServletRequest request) {
+        exception.printStackTrace();
+
+        ModelAndView mav = new ModelAndView();
+        String message = exception.getMessage().replaceAll(";", ";\n");
+        mav.addObject("excClass", exception.getClass());
+        mav.addObject("message", message);
+        mav.setViewName("error");
+        return mav;
     }
 }
