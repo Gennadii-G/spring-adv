@@ -8,6 +8,7 @@ import beans.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,44 +61,29 @@ public class BookingController {
 
 
     /**
-     * @request example '/booking/ticketsForEvent?event=The%20revenant&auditorium=Yellow%20hall'
+     * @request example '/booking/ticketsForEvent?event=The%20revenant&auditorium=Yellow%20hall&datetime=2016-02-05T21:18:00.000-05:00'
      */
     @RequestMapping(value = "/ticketsForEvent", method = RequestMethod.GET)
-    public String getTicketsForEvent(Model model, @RequestParam String event, @RequestParam String auditorium){
-        // this is mock
-        LocalDateTime mock = LocalDateTime.of(LocalDate.of(2016, 2, 5),
-                LocalTime.of(21, 18, 0));
+    public String getTicketsForEvent(Model model, @RequestParam String event, @RequestParam String auditorium,
+                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime){
 
         List<Ticket> tickets;
-        tickets = bookingService.getTicketsForEvent(event, auditorium, mock);
+        tickets = bookingService.getTicketsForEvent(event, auditorium, dateTime);
         model.addAttribute("tickets", tickets);
         return "tickets";
     }
 
 
     @RequestMapping(value = "/pdf", method = RequestMethod.GET, headers = "Accept=application/pdf")
-    public void generateReport(HttpServletResponse response, @RequestParam String event,
-                               @RequestParam String auditorium) throws Exception {
-        // this is mock
-        LocalDateTime mock = LocalDateTime.of(LocalDate.of(2016, 2, 5),
-                LocalTime.of(21, 18, 0));
+    public void generateReport(HttpServletResponse response, @RequestParam String event, @RequestParam String auditorium,
+                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime)
+            throws Exception {
 
         List<Ticket> tickets;
-        tickets = bookingService.getTicketsForEvent(event, auditorium, mock);
+        tickets = bookingService.getTicketsForEvent(event, auditorium, dateTime);
 
         byte[] bytes = ticketsToPdfConverter.convert(tickets);
         streamReport(response, bytes, "tickets.pdf");
-    }
-
-    private void streamReport(HttpServletResponse response, byte[] data, String name)
-            throws IOException {
-
-        response.setContentType("application/pdf");
-        response.setHeader("Content-disposition", "attachment; filename=" + name);
-        response.setContentLength(data.length);
-
-        response.getOutputStream().write(data);
-        response.getOutputStream().flush();
     }
 
     @ExceptionHandler(Exception.class)
@@ -112,6 +96,17 @@ public class BookingController {
         mav.addObject("message", message);
         mav.setViewName("error");
         return mav;
+    }
+
+    private void streamReport(HttpServletResponse response, byte[] data, String name)
+            throws IOException {
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-disposition", "attachment; filename=" + name);
+        response.setContentLength(data.length);
+
+        response.getOutputStream().write(data);
+        response.getOutputStream().flush();
     }
 
 }

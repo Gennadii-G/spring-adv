@@ -24,7 +24,6 @@ public class TicketsToPdfConverter implements Converter<List<Ticket>, byte[]> {
 
                 PdfWriter.getInstance(document, stream);
 
-
             document.open();
             document.addTitle("Tickets");
             Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
@@ -38,9 +37,7 @@ public class TicketsToPdfConverter implements Converter<List<Ticket>, byte[]> {
             bytes = stream.toByteArray();
             stream.close();
 
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (DocumentException | IOException e) {
             e.printStackTrace();
         }
         return bytes;

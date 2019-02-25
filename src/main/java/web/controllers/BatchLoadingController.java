@@ -8,6 +8,7 @@ import beans.services.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping(value = "upload")
@@ -50,10 +52,11 @@ public class BatchLoadingController {
      *            <name>ipsum</name>
      *            <rate>HIGH</rate>
      *            <baseprice>30.00</baseprice>
-     *            <datetime>12.12.19</datetime>
+     *            <datetime>2016-02-05T21:00:00+04:00</datetime>
      *           <auditorium>Yellow hall</auditorium>
      *   </event>
      * <events>
+     * @DateForTest: LocalDateTime.of(LocalDate.of(2016, 2, 5), LocalTime.of(9, 0, 0)
      * @param file
      * @param modelMap
      * @throws IOException
@@ -89,18 +92,17 @@ public class BatchLoadingController {
                 String name = eElement.getAttribute("name");
                 String strRate = eElement.getElementsByTagName("rate").item(0).getTextContent();
                 String baseprice = eElement.getElementsByTagName("baseprice").item(0).getTextContent();
-                String datetime = eElement.getElementsByTagName("datetime").item(0).getTextContent();
+                String strDateTime = eElement.getElementsByTagName("datetime").item(0).getTextContent();
                 String strAuditorium = eElement.getElementsByTagName("auditorium").item(0).getTextContent();
+                LocalDateTime dateTime = LocalDateTime.parse(strDateTime, DateTimeFormatter.ISO_DATE_TIME);
 
                 Rate rate = Rate.valueOf(strRate);
                 Auditorium auditorium = auditoriumService.getByName(strAuditorium);
                 Double price = Double.valueOf(baseprice);
-                Event event = eventService.create(new Event(name, rate, price,
-                        LocalDateTime.of(LocalDate.of(2016, 2, 5), LocalTime.of(9, 0, 0)),
-                                auditorium));
+                Event event = eventService.create(new Event(name, rate, price, dateTime, auditorium));
             }
         }
-
     }
+
 
 }
