@@ -26,4 +26,8 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <listner>
+        <listner-class>org.springframework.web.context.ContextLoaderListener</listner-class>
+    </listner>
+
 </web-app>

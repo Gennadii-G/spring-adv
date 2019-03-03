@@ -7,6 +7,7 @@ import beans.models.Ticket;
 import beans.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,11 +30,15 @@ public class UserServiceImpl implements UserService {
     private RoleDAO roleDAO;
 
     @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
     public UserServiceImpl(@Qualifier("userDAO") UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
     public User register(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userDAO.create(user);
     }
 

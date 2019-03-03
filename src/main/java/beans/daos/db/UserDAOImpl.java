@@ -1,11 +1,15 @@
 package beans.daos.db;
 
 import beans.daos.AbstractDAO;
+import beans.daos.RoleDAO;
 import beans.daos.UserDAO;
 import beans.models.User;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,10 +22,21 @@ import java.util.Objects;
 @Repository(value = "userDAO")
 public class UserDAOImpl extends AbstractDAO implements UserDAO {
 
+    @Autowired
+    @Qualifier("roleDAO")
+    private RoleDAO roleDAO;
+
     @Override
     public User create(User user) {
         UserDAO.validateUser(user);
         User byEmail = getByEmail(user.getEmail());
+
+        if(Objects.isNull(user.getRoles())) {
+            user.setRoles(Collections.singleton(roleDAO.getOne(1L)));
+        }else {
+            user.getRoles().add(roleDAO.getOne(1L));
+        }
+
         if (Objects.nonNull(byEmail)) {
             throw new IllegalStateException(
                     String.format("Unable to store user: [%s]. User with email: [%s] is already created.", user,

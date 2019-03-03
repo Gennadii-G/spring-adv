@@ -8,20 +8,25 @@
 
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/css/**" access="permitAll"/>
-        <!--<intercept-url pattern="/login.jsp" access="permitAll"/>-->
-        <intercept-url pattern="/auditorium/all" access="permitAll"/>
-        <intercept-url pattern="/user/roles" access="permitAll"/>
-        <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/auditorium/all" access="hasAnyRole('ROLE_REGISTERED_USER', 'ROLE_BOOKING_MANAGER')"/>
+        <intercept-url pattern="/**" access="hasAnyRole('ROLE_REGISTERED_USER', 'ROLE_BOOKING_MANAGER')"/>
     </http>
 
 
-    <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="andre" password="123" authorities="ROLE_USER, ROLE_ADMIN"/>
-                <user name="keni" password="123" authorities="ROLE_USER"/>
-            </user-service>
+    <!-- db users -->
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="userDetailsServiceImpl">
+            <password-encoder ref="encoder"/>
         </authentication-provider>
     </authentication-manager>
+
+
+    <b:bean id="encoder"
+            class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+        <b:constructor-arg name="strength" value="11"/>
+    </b:bean>
+
+    <b:bean id="userDetailsServiceImpl"
+            class="beans.services.UserDetailsServiceImpl"/>
 
 </b:beans>
