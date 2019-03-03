@@ -10,6 +10,7 @@
         <intercept-url pattern="/css/**" access="permitAll"/>
         <!--<intercept-url pattern="/login.jsp" access="permitAll"/>-->
         <intercept-url pattern="/auditorium/all" access="permitAll"/>
+        <intercept-url pattern="/user/roles" access="permitAll"/>
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
     </http>
 

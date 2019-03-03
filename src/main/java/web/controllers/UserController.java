@@ -41,6 +41,14 @@ public class UserController {
         return "users";
     }
 
+    @RequestMapping(value = "/roles")
+    public String getAllRoles() {
+        System.out.println("roles: " + userService.getRoles());
+        System.out.println("users: " + userService.getAll());
+//        System.out.println("user_roles: " + userService.getAll());
+        return "index";
+    }
+
     @ExceptionHandler(Exception.class)
     public ModelAndView handleException(Exception exception, HttpServletRequest request) {
         exception.printStackTrace();

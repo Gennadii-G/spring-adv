@@ -1,5 +1,6 @@
 package beans.services;
 
+import beans.models.Role;
 import beans.models.Ticket;
 import beans.models.User;
 
@@ -22,5 +23,9 @@ public interface UserService {
     User getUserByEmail(String email);
 
     List<User> getUsersByName(String name);
+
+    List<User> getAll();
+
+    List<Role> getRoles();
 
 }

@@ -11,7 +11,6 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--<import resource="classpath:webapp/WEB-INF/security.xml"/>-->
     <import resource="security.xml" />
 
     <context:component-scan base-package="beans"/>
