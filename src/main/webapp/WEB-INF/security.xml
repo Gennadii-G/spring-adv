@@ -16,6 +16,11 @@
                     username-parameter="email" password-parameter="password"/>
 
         <logout logout-success-url="/login?logout"/>
+
+        <remember-me
+                token-validity-seconds="1209600"
+                remember-me-parameter="remember-me"
+                data-source-ref="dataSource" />
     </http>
 
 

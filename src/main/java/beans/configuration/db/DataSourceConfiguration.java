@@ -30,7 +30,7 @@ public class DataSourceConfiguration {
     @Value("${jdbc.password}")
     private String password;
 
-    @Bean
+    @Bean(name = "dataSource")
     public DataSource dataSource() {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource(url, user, password);
         driverManagerDataSource.setDriverClassName(driver);
