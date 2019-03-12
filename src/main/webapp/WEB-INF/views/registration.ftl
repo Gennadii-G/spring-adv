@@ -37,6 +37,10 @@
                            required="required" autofocus/>
                 </div>
                 <div class="form-group">
+                    <input type="text" class="form-control" name="name" id="name" placeholder="name"
+                           required="required" autofocus/>
+                </div>
+                <div class="form-group">
                     <input type="password" class="form-control" name="password" id="password"
                            placeholder="password" required="required"/>
                 </div>
@@ -46,7 +50,7 @@
                 </div>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block login-btn">Login</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block login-btn">Sign in</button>
                 </div>
             </form>
         </div>

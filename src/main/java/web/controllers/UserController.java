@@ -3,6 +3,7 @@ package web.controllers;
 import beans.models.User;
 import beans.services.SecurityService;
 import beans.services.UserService;
+import beans.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,10 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    SecurityService securityService;
+    private SecurityService securityService;
+
+    @Autowired
+    private UserValidator userValidator;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -54,6 +58,9 @@ public class UserController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
+        if (securityService.isRegistredUser()) {
+            return "logout";
+        }
         model.addAttribute("userForm", new User());
 
         return "registration";
@@ -61,14 +68,12 @@ public class UserController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
-//        userValidator.validate(userForm, bindingResult);
-
+        userValidator.validate(userForm, bindingResult);
         if (bindingResult.hasErrors()) {
             return "registration";
         }
 
         userService.register(userForm);
-
         securityService.autoLogin(userForm.getEmail(), userForm.getConfirmPassword());
 
         return "redirect:/welcome";
