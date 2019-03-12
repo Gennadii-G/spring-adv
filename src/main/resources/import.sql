@@ -12,10 +12,5 @@ INSERT INTO USER (ID, NAME, EMAIL, PASSWORD) VALUES (1, 'admin', 'name1', '$2a$1
 INSERT INTO USER_ROLES (USER_ID, ROLE_ID) VALUES (1, 1)
 INSERT INTO USER_ROLES (USER_ID, ROLE_ID) VALUES (1, 2)
 
-CREATE TABLE persistent_logins (
-    username varchar(64) not null,
-    series varchar(64) not null,
-    token varchar(64) not null,
-    last_used timestamp not null,
-    PRIMARY KEY (series)
-);
+DROP TABLE persistent_logins;
+CREATE TABLE persistent_logins (username varchar(64) not null, series varchar(64) not null, token varchar(64) not null, last_used timestamp not null, PRIMARY KEY (series));

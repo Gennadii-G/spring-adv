@@ -38,25 +38,12 @@ public class MainController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String mainPage() {
+        return "main";
+    }
+
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String index() {
         return "index";
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model, String error, String logout) {
-        if (error != null) {
-            model.addAttribute("error", "Username or password is incorrect.");
-        }
-
-        if (logout != null) {
-            model.addAttribute("message", "Logged out successfully.");
-        }
-
-        return "login";
-    }
-
-    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
-    public String welcome(Model model) {
-        return "welcome";
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
