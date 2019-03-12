@@ -29,6 +29,8 @@
                 <column name="ROLE_ID" not-null="true" />
             </many-to-many>
         </set>
+        <one-to-one name="userAccount" class="beans.models.UserAccount"
+                    cascade="save-update"/>
     </class>
 
 </hibernate-mapping>

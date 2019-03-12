@@ -18,8 +18,10 @@ public class User {
     private Set<Role> roles;
     private String    password;
     private String    confirmPassword;
+    private UserAccount userAccount;
 
     public User() {
+        this.userAccount = new UserAccount();
     }
 
     public User(long id, String email, String name, LocalDate birthday) {
@@ -27,6 +29,15 @@ public class User {
         this.email = email;
         this.name = name;
         this.birthday = birthday;
+        this.userAccount = new UserAccount();
+    }
+
+    public User(long id, String email, String name, LocalDate birthday, Long amount) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.birthday = birthday;
+        this.userAccount = new UserAccount(amount);
     }
 
     public User(String email, String name, LocalDate birthday) {
@@ -93,6 +104,14 @@ public class User {
         this.confirmPassword = confirmPassword;
     }
 
+    public UserAccount getAccount() {
+        return userAccount;
+    }
+
+    public void setAccount(UserAccount account) {
+        this.userAccount = account;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -131,6 +150,7 @@ public class User {
                 ", roles=" + roles +
                 ", password='" + password + '\'' +
                 ", confirmPassword='" + confirmPassword + '\'' +
+                ", userAccount=" + userAccount +
                 '}';
     }
 }
