@@ -9,16 +9,16 @@ public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long amount;
+    private Double amount;
     @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
     private User user;
 
-    public UserAccount(Long amount) {
+    public UserAccount(Double amount) {
         this.amount = amount;
     }
 
     public UserAccount() {
-        this.setAmount(0L);
+        this.setAmount(0d);
     }
 
     public Long getId() {
@@ -29,11 +29,11 @@ public class UserAccount {
         this.id = id;
     }
 
-    public Long getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -33,6 +34,7 @@ public class BookingServiceImpl implements BookingService {
     private final UserService       userService;
     private final BookingDAO        bookingDAO;
     private final DiscountService   discountService;
+    private final UserAccountService   userAccountService;
     private final Logger            logger;
     final         int               minSeatNumber;
     final         double            vipSeatPriceMultiplier;
@@ -44,12 +46,14 @@ public class BookingServiceImpl implements BookingService {
                               @Qualifier("auditoriumServiceImpl") AuditoriumService auditoriumService,
                               @Qualifier("userServiceImpl") UserService userService,
                               @Qualifier("discountServiceImpl") DiscountService discountService,
+                              @Qualifier("userAccountServiceImpl") UserAccountService userAccountService,
                               @Qualifier("bookingDAO") BookingDAO bookingDAO,
                               @Value("${min.seat.number}") int minSeatNumber,
                               @Value("${vip.seat.price.multiplier}") double vipSeatPriceMultiplier,
                               @Value("${high.rate.price.multiplier}") double highRatedPriceMultiplier,
                               @Value("${def.rate.price.multiplier}") double defaultRateMultiplier) {
         this.eventService = eventService;
+        this.userAccountService = userAccountService;
         this.auditoriumService = auditoriumService;
         this.userService = userService;
         this.bookingDAO = bookingDAO;
@@ -132,6 +136,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Ticket bookTicket(User user, Ticket ticket) {
         if (Objects.isNull(user)) {
             throw new NullPointerException("User is [null]");
@@ -147,9 +152,11 @@ public class BookingServiceImpl implements BookingService {
 
         if (!seatsAreAlreadyBooked)
             bookingDAO.create(user, ticket);
-        else
+        else {
             throw new IllegalStateException("Unable to book ticket: [" + ticket + "]. Seats are already booked.");
-
+        }
+        UserAccount account = userAccountService.getByUser(user);
+        account.setAmount(account.getAmount() + ticket.getPrice());
         return ticket;
     }
 

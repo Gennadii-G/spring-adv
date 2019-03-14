@@ -32,7 +32,7 @@ public class User {
         this.userAccount = new UserAccount();
     }
 
-    public User(long id, String email, String name, LocalDate birthday, Long amount) {
+    public User(long id, String email, String name, LocalDate birthday, Double amount) {
         this.id = id;
         this.email = email;
         this.name = name;
