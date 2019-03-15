@@ -1,5 +1,7 @@
 package beans.models;
 
+import sun.awt.SunHints;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,7 +12,8 @@ public class UserAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double amount;
-    @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     public UserAccount(Double amount) {
@@ -37,12 +40,19 @@ public class UserAccount {
         this.amount = amount;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "UserAccount{" +
                 "id=" + id +
                 ", amount=" + amount +
-                ", user=" + user +
                 '}';
     }
 }

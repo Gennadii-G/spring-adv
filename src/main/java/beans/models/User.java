@@ -104,12 +104,12 @@ public class User {
         this.confirmPassword = confirmPassword;
     }
 
-    public UserAccount getAccount() {
+    public UserAccount getUserAccount() {
         return userAccount;
     }
 
-    public void setAccount(UserAccount account) {
-        this.userAccount = account;
+    public void setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
     }
 
     @Override

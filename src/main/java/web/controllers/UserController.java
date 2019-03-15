@@ -4,6 +4,8 @@ import beans.models.User;
 import beans.services.SecurityService;
 import beans.services.UserService;
 import beans.validator.UserValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -35,6 +37,8 @@ public class UserController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @RequestMapping(value = "/byId")
     public String getById(Model model, Long id){
         List<User> users = Collections.singletonList(userService.getById(id));
@@ -50,7 +54,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/byName")
-    public String getById(Model model, String name){
+    public String getById(Model model, String name) {
         List<User> users = userService.getUsersByName(name);
         model.addAttribute("users", users);
         return "users";
@@ -77,6 +81,16 @@ public class UserController {
         securityService.autoLogin(userForm.getEmail(), userForm.getConfirmPassword());
 
         return "redirect:/welcome";
+    }
+
+    @RequestMapping(value = "/showAll")
+    public String showAllUsersInConsole(){
+        List<User> users = userService.getAll();
+        logger.info("count of list: {}", users.size());
+        users.stream().forEach(elt -> {
+            logger.info("ose of user: {}", elt.getUserAccount());
+        });
+        return "index";
     }
 
     @ExceptionHandler(Exception.class)
