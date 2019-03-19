@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://spring-course/ws">
+
+  <xs:import namespace="http://spring-course/ws" schemaLocation="schema1.xsd"/>
+
+  <xs:complexType name="user">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="email" type="xs:string"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="birthday" type="xs:string" minOccurs="0"/>
+      <xs:element name="roles" type="role" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="password" type="xs:string" minOccurs="0"/>
+      <xs:element name="confirmPassword" type="xs:string" minOccurs="0"/>
+      <xs:element name="userAccount" type="userAccount" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="role">
+    <xs:sequence>
+      <xs:element name="code" type="xs:string" minOccurs="0"/>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="userAccount">
+    <xs:sequence>
+      <xs:element name="amount" type="xs:double" minOccurs="0"/>
+      <xs:element name="id" type="xs:long" minOccurs="0"/>
+      <xs:element name="user" type="user" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

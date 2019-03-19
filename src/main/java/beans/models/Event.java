@@ -1,9 +1,10 @@
 package beans.models;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import beans.utils.LocalDateAdapter;
+import beans.utils.LocalDateTimeAdapter;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDateTime;
 
 /**
@@ -22,6 +23,8 @@ public class Event {
     private String        name;
     private Rate          rate;
     private double        basePrice;
+    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+    @XmlSchemaType(name = "localDateTime")
     private LocalDateTime dateTime;
     private Auditorium    auditorium;
 

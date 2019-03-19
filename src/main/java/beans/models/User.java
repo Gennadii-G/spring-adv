@@ -1,9 +1,9 @@
 package beans.models;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import beans.utils.LocalDateAdapter;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -23,6 +23,8 @@ public class User {
     @XmlElement(required = true)
     private String    email;
     private String    name;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+//    @XmlSchemaType(name = "localDate")
     private LocalDate birthday;
     private Set<Role> roles;
     private String    password;
