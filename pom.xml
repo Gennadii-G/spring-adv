@@ -17,6 +17,7 @@
         <h2.ver>1.4.191</h2.ver>
         <jetty.ver>9.4.14.v20181114</jetty.ver>
         <logback.ver>1.2.3</logback.ver>
+        <jackson.version>2.6.3</jackson.version>
     </properties>
 
     <dependencies>
@@ -137,6 +138,13 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
             <version>${spring.ver}</version>
+        </dependency>
+
+        <!-- jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
     </dependencies>

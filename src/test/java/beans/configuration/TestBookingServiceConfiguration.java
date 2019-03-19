@@ -133,9 +133,9 @@ public class TestBookingServiceConfiguration {
         return new UserServiceImpl(userDAOMock());
     }
 
-    @Bean(name = "testBookingServiceImpl")
-    public BookingService bookingServiceImpl() {
-        return new BookingServiceImpl(eventServiceImpl(), auditoriumServiceImpl(), userServiceImpl(),
-                                      discountBookingServiceImpl(), bookingBookingDAO(), 1, 2, 1.2, 1);
-    }
+//    @Bean(name = "testBookingServiceImpl")
+//    public BookingService bookingServiceImpl() {
+//        return new BookingServiceImpl(eventServiceImpl(), auditoriumServiceImpl(), userServiceImpl(),
+//                                      discountBookingServiceImpl(), bookingBookingDAO(), 1, 2, 1.2, 1);
+//    }
 }

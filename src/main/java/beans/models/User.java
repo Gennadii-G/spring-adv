@@ -1,5 +1,9 @@
 package beans.models;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -9,9 +13,14 @@ import java.util.Set;
  * Date: 2/1/2016
  * Time: 7:35 PM
  */
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "user", namespace = "http://spring-course/ws")
 public class User {
 
+    @XmlElement(required = true)
     private long      id;
+    @XmlElement(required = true)
     private String    email;
     private String    name;
     private LocalDate birthday;

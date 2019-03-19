@@ -1,5 +1,9 @@
 package beans.models;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDateTime;
 
 /**
@@ -8,8 +12,12 @@ import java.time.LocalDateTime;
  * Date: 2/1/2016
  * Time: 7:42 PM
  */
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "event", namespace = "http://spring-course/ws")
 public class Event {
 
+    @XmlElement(required = true)
     private long          id;
     private String        name;
     private Rate          rate;
