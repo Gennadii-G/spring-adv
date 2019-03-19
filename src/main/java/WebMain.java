@@ -1,10 +1,13 @@
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import web.soap.EventWS;
+import web.soap.EventWSImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Endpoint;
 import java.io.IOException;
 
 public class WebMain extends AbstractHandler {
@@ -23,10 +26,12 @@ public class WebMain extends AbstractHandler {
 
     public static void main(String[] args) throws Exception
     {
-        Server server = new Server(8080);
-        server.setHandler(new WebMain());
+//        Server server = new Server(8080);
+//        server.setHandler(new WebMain());
+//
+//        server.start();
+//        server.join();
 
-        server.start();
-        server.join();
+        Endpoint.publish("http://localhost:8888/ws/eventws", new EventWSImpl());
     }
 }
